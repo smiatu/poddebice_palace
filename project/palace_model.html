@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lab03-05 - pointerlock controls</title>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background-color: #ffffff;
+				margin: 0;
+				overflow: hidden;
+				font-family: arial;
+			}
+
+			#blocker {
+
+				position: absolute;
+
+				width: 100%;
+				height: 100%;
+
+				background-color: rgba(0,0,0,0.5);
+
+			}
+
+			#instructions {
+
+				width: 100%;
+				height: 100%;
+
+				display: -webkit-box;
+				display: -moz-box;
+				display: box;
+
+				-webkit-box-orient: horizontal;
+				-moz-box-orient: horizontal;
+				box-orient: horizontal;
+
+				-webkit-box-pack: center;
+				-moz-box-pack: center;
+				box-pack: center;
+
+				-webkit-box-align: center;
+				-moz-box-align: center;
+				box-align: center;
+
+				color: #ffffff;
+				text-align: center;
+
+				cursor: pointer;
+
+			}
+
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		<script src="PointerLockControls.js"></script>
+
+		<div id="blocker">
+
+			<div id="instructions">
+				<span style="font-size:40px">Click to play</span>
+				<br />
+				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+			</div>
+
+		</div>
+
+		<script>
+
+			var camera, scene, renderer;
+			var geometry, material, mesh;
+			var controls,time = Date.now();
+
+			var objects = [];
+
+			var ray;
+
+
+			var instructions = document.getElementById( 'instructions' );
+
+			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
+
+			var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+			if ( havePointerLock ) {
+
+				var element = document.body;
+
+				var pointerlockchange = function ( event ) {
+
+					if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+
+						controls.enabled = true;
+
+
+					} else {
+
+						controls.enabled = false;
+
+						instructions.style.display = '';
+
+					}
+
+				}
+
+				var pointerlockerror = function ( event ) {
+
+					instructions.style.display = '';
+
+				}
+
+				// Hook pointer lock state change events
+				document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+				document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+				document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+
+				document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+				document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+				document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+
+				instructions.addEventListener( 'click', function ( event ) {
+
+					instructions.style.display = 'none';
+
+					// Ask the browser to lock the pointer
+					element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+					if ( /Firefox/i.test( navigator.userAgent ) ) {
+
+						var fullscreenchange = function ( event ) {
+
+							if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
+
+								document.removeEventListener( 'fullscreenchange', fullscreenchange );
+								document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+
+								element.requestPointerLock();
+							}
+
+						}
+
+						document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+						document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+
+						element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+
+						element.requestFullscreen();
+
+					} else {
+
+						element.requestPointerLock();
+
+					}
+
+				}, false );
+
+			} else {
+
+				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+
+			}
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+
+				scene = new THREE.Scene();
+				//scene.fog = new THREE.Fog( 0x000000, 0, 10000 );
+
+				// var imagePrefix = "textures/";
+				// var directions  = ["xpos", "xneg", "ypos", "yneg", "zpos", "zneg"];
+				// var imageSuffix = ".png";
+				// var skyGeometry = new THREE.CubeGeometry( 3000, 3000, 3000 );
+				//
+				// var materialArray = [];
+				// // for (var i = 0; i < 6; i++)
+				// // 	materialArray.push( new THREE.MeshBasicMaterial({
+				// // 		map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+				// // 		side: THREE.BackSide
+				// // 	}));
+				// for (var i = 0; i < 6; i++) {
+				// 	materialArray.push(new THREE.MeshBasicMaterial({
+				// 		map: THREE.ImageUtils.loadTexture(imagePrefix + directions[i] + imageSuffix),
+				// 		side: THREE.BackSide
+				// 	}));
+				// 	// materialArray.push(new THREE.MeshBasicMaterial({
+				// 	// 	map: THREE.ImageUtils.loadTexture(imagePrefix + directions[i] + imageSuffix),
+				// 	// 	side: THREE.BackSide
+				// 	// }));
+				// }
+				// var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+				// var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+				// scene.add( skyBox );
+
+				var light = new THREE.DirectionalLight( 0xffffff, 1.5 );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
+
+				var light = new THREE.DirectionalLight( 0xffffff, 0.75 );
+				light.position.set( -1, - 0.5, -1 );
+				scene.add( light );
+
+				controls = new THREE.PointerLockControls( camera );
+				scene.add( controls.getObject() );
+
+				ray = new THREE.Raycaster();
+				ray.ray.direction.set( 0, -1, 0 );
+
+				// floor
+
+				// geometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
+				// geometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+				//
+				// for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
+				//
+				// 	var vertex = geometry.vertices[ i ];
+				// 	vertex.x += Math.random() * 20 - 10;
+				// 	vertex.y += Math.random() * 2;
+				// 	vertex.z += Math.random() * 20 - 10;
+				//
+				// }
+				//
+				// for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
+				//
+				// 	var face = geometry.faces[ i ];
+				// 	face.vertexColors[ 0 ] = new THREE.Color().setHSL( 0, 0.75, Math.random() * 0.25 + 0.75 );
+				// 	face.vertexColors[ 1 ] = new THREE.Color().setHSL( 0, 1, Math.random() * 0.25 + 0.75 );
+				// 	face.vertexColors[ 2 ] = new THREE.Color().setHSL( 0, 0.75, Math.random() * 0.25 + 0.75 );
+				//
+				// }
+				//
+				// material = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+				//
+				// mesh = new THREE.Mesh( geometry, material );
+				// scene.add( mesh );
+
+				const floorgeometry = new THREE.PlaneGeometry( 2000, 2000 );
+				floorgeometry.applyMatrix(new THREE.Matrix4().makeRotationX(- Math.PI / 2))
+				//todo do poprawy na jakas trawe czy cos
+				const floormaterial = new THREE.MeshLambertMaterial({
+					color: 0x159947,
+					side: THREE.DoubleSide
+				})
+				const floor = new THREE.Mesh(floorgeometry, floormaterial);
+				scene.add(floor);
+
+				// objects
+
+				// geometry = new THREE.BoxGeometry( 20, 20, 20 );
+				//
+				// for ( var i = 0, l = geometry.faces.length; i < l; i ++ ) {
+				//
+				// 	var face = geometry.faces[ i ];
+				// 	face.vertexColors[ 0 ] = new THREE.Color().setHSL( 0, 0.75, Math.random() * 0.25 + 0.75 );
+				// 	face.vertexColors[ 1 ] = new THREE.Color().setHSL( 0, 1, Math.random() * 0.25 + 0.75 );
+				// 	face.vertexColors[ 2 ] = new THREE.Color().setHSL( 0, 0.75, Math.random() * 0.25 + 0.75 );
+				//
+				// }
+				//
+				// for ( var i = 0; i < 500; i ++ ) {
+				//
+				// 	material = new THREE.MeshPhongMaterial( { specular: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+				//
+				// 	var mesh = new THREE.Mesh( geometry, material );
+				// 	mesh.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
+				// 	mesh.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
+				// 	mesh.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
+				// 	scene.add( mesh );
+				//
+				// 	material.color.setHSL( 0, 1, Math.random() * 0.25 + 0.75 );
+				//
+				// 	objects.push( mesh );
+				//
+				// }
+
+				const wallgeometry = new THREE.BoxGeometry(100, 120, 30);
+				const wallmaterial = new THREE.MeshPhongMaterial({
+					color: 0xf5f5dc
+				})
+				const wall = new THREE.Mesh(wallgeometry, wallmaterial);
+				wall.position.set(275, 60, 285);
+				scene.add(wall);
+
+				PrismGeometry = function ( vertices, height ) {
+
+					var Shape = new THREE.Shape();
+
+					( function f( ctx ) {
+
+						ctx.moveTo( vertices[0].x, vertices[0].y );
+						for (var i=1; i < vertices.length; i++) {
+							ctx.lineTo( vertices[i].x, vertices[i].y );
+						}
+						ctx.lineTo( vertices[0].x, vertices[0].y );
+
+					} )( Shape );
+
+					var settings = { };
+					settings.amount = height;
+					settings.bevelEnabled = false;
+					THREE.ExtrudeGeometry.call( this, Shape, settings );
+
+				};
+
+				PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
+
+				var A = new THREE.Vector2( 0, 0 );
+				var B = new THREE.Vector2( 95, 0 );
+				var C = new THREE.Vector2( 0, 30 );
+
+				var height = 30;
+				var walltopgeometry = new PrismGeometry( [ A, B, C ], height );
+
+				var walltopmaterial = new THREE.MeshPhongMaterial( { color: 0xf5f5dc, specular: 0x00ffff, shininess: 20 } );
+
+				var walltop = new THREE.Mesh( walltopgeometry, walltopmaterial );
+				walltop.position.set(225,120,270);
+
+				scene.add( walltop );
+
+				const b1bodygeo = new THREE.BoxGeometry(150,150,300);
+				const b1bodymat = new THREE.MeshPhongMaterial({
+					// specular: 0xffffff,
+					// shading: THREE.FlatShading,
+					// vertexColors: THREE.VertexColors
+					color: 0xf5f5dc
+				})
+				const b1 = new THREE.Mesh( b1bodygeo, b1bodymat );
+				b1.position.set(150,75,150);
+				scene.add(b1);
+
+				const b2bodygeo = new THREE.BoxGeometry(300,150,150);
+				const b2bodymat = new THREE.MeshPhongMaterial({
+					// specular: 0xffffff,
+					// shading: THREE.FlatShading,
+					// vertexColors: THREE.VertexColors
+					color: 0xf5f5dc
+				})
+				const b2 = new THREE.Mesh( b2bodygeo, b2bodymat );
+				//b2.rotation(2);
+				b2.position.set(150,75,-75);
+				scene.add(b2);
+
+				const chapelbodygeo = new THREE.CylinderGeometry(67.5,67.5,75,8);
+				const chapelbodymat = new THREE.MeshPhongMaterial({
+					// specular: 0xffffff,
+					// shading: THREE.FlatShading,
+					// vertexColors: THREE.VertexColors
+					color: 0xf5f5dc
+				})
+				const chapel = new THREE.Mesh( chapelbodygeo, chapelbodymat );
+				chapel.position.set(0,37.5,250);
+				scene.add(chapel);
+
+				const chapelroofgeometry = new THREE.ConeGeometry(75, 30, 8, 1);
+				const chapelroofmaterial = new THREE.MeshPhongMaterial({
+					color: 0x696F71
+				})
+				const chapelroof = new THREE.Mesh(chapelroofgeometry,chapelroofmaterial);
+				chapelroof.position.set(0, 90, 250);
+				scene.add(chapelroof);
+
+				const towerbodygeo = new THREE.CylinderGeometry(30,30,300,8);
+				const towerbodymat = new THREE.MeshPhongMaterial({
+					// specular: 0xffffff,
+					// shading: THREE.FlatShading,
+					// vertexColors: THREE.VertexColors
+					color: 0xf5f5dc
+				})
+				const tower = new THREE.Mesh( towerbodygeo, towerbodymat );
+				tower.position.set(350,150,280);
+				scene.add(tower);
+
+
+
+				// var scopeTexture = new THREE.TextureLoader().load("scope.png");
+				// var scopeGeometry = new THREE.PlaneGeometry(5, 5);
+				// var scopeMaterial = new THREE.MeshBasicMaterial({map:
+				// 	scopeTexture, transparent: true});
+				// var scope = new THREE.Mesh(scopeGeometry, scopeMaterial);
+				// scope.position.x = 0;
+				// scope.position.y = 1;
+				// scope.position.z = -1.3;
+				// //scene.add(myBox);
+				// camera.add(scope);
+
+				//
+
+				renderer = new THREE.WebGLRenderer();
+				renderer.setClearColor( 0xffffff );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				document.body.appendChild( renderer.domElement );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				//
+
+				controls.isOnObject( false );
+
+				ray.ray.origin.copy( controls.getObject().position );
+				ray.ray.origin.y -= 10;
+
+				var intersections = ray.intersectObjects( objects );
+
+				if ( intersections.length > 0 ) {
+
+					var distance = intersections[ 0 ].distance;
+
+					if ( distance > 0 && distance < 10 ) {
+
+						controls.isOnObject( true );
+
+					}
+
+				}
+
+				controls.update( Date.now() - time );
+
+				renderer.render( scene, camera );
+
+				time = Date.now();
+
+			}
+
+		</script>
+	</body>
+</html>
