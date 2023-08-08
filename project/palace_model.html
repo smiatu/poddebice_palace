@@ -311,21 +311,56 @@
 
 				};
 
+				// start of prim-alike objects
+
 				PrismGeometry.prototype = Object.create( THREE.ExtrudeGeometry.prototype );
 
-				var A = new THREE.Vector2( 0, 0 );
-				var B = new THREE.Vector2( 95, 0 );
-				var C = new THREE.Vector2( 0, 30 );
+				let A = new THREE.Vector2( 0, 0 );
+				let B = new THREE.Vector2( 95, 0 );
+				let C = new THREE.Vector2( 0, 30 );
 
-				var height = 30;
+				let height = 30;
 				var walltopgeometry = new PrismGeometry( [ A, B, C ], height );
 
-				var walltopmaterial = new THREE.MeshPhongMaterial( { color: 0xf5f5dc, specular: 0x00ffff, shininess: 20 } );
+				var walltopmaterial = new THREE.MeshPhongMaterial( {
+					color: 0xf5f5dc
+				} );
 
 				var walltop = new THREE.Mesh( walltopgeometry, walltopmaterial );
 				walltop.position.set(225,120,270);
 
 				scene.add( walltop );
+
+				A = new THREE.Vector2( 0, 0 );
+				B = new THREE.Vector2( 75, 0 );
+				C = new THREE.Vector2( 0, 60 );
+				height = 300;
+
+				const b2rooftopgeo = new PrismGeometry( [ A, B, C ], height );
+				const b2rooftopmat = new THREE.MeshPhongMaterial({
+					color: 0x696F71
+				});
+				const b2rooftop = new THREE.Mesh(b2rooftopgeo, b2rooftopmat);
+				b2rooftop.position.set(0,100,-75);
+				b2rooftop.rotation.y = Math.PI / 2;
+				scene.add(b2rooftop);
+
+				const b2rooftopp2 = new THREE.Mesh(b2rooftopgeo, b2rooftopmat);
+				b2rooftopp2.position.set(300,100,-75);
+				b2rooftopp2.rotation.y = Math.PI*3 / 2;
+				scene.add(b2rooftopp2);
+
+				const b1rooftop = new THREE.Mesh(b2rooftopgeo, b2rooftopmat);
+				b1rooftop.position.set(150,150,0);
+				//b1rooftop.rotation.y = Math.PI / 2;
+				scene.add(b1rooftop);
+
+				const b1rooftopp2 = new THREE.Mesh(b2rooftopgeo, b2rooftopmat);
+				b1rooftopp2.position.set(150,150,300);
+				b1rooftopp2.rotation.y = Math.PI;
+				scene.add(b1rooftopp2);
+
+				// end of prism-alike objects
 
 				const b1bodygeo = new THREE.BoxGeometry(150,150,300);
 				const b1bodymat = new THREE.MeshPhongMaterial({
@@ -338,7 +373,7 @@
 				b1.position.set(150,75,150);
 				scene.add(b1);
 
-				const b2bodygeo = new THREE.BoxGeometry(300,150,150);
+				const b2bodygeo = new THREE.BoxGeometry(300,100,150);
 				const b2bodymat = new THREE.MeshPhongMaterial({
 					// specular: 0xffffff,
 					// shading: THREE.FlatShading,
@@ -346,8 +381,7 @@
 					color: 0xf5f5dc
 				})
 				const b2 = new THREE.Mesh( b2bodygeo, b2bodymat );
-				//b2.rotation(2);
-				b2.position.set(150,75,-75);
+				b2.position.set(150,50,-75);
 				scene.add(b2);
 
 				const chapelbodygeo = new THREE.CylinderGeometry(67.5,67.5,75,8);
@@ -369,7 +403,7 @@
 				chapelroof.position.set(0, 90, 250);
 				scene.add(chapelroof);
 
-				const towerbodygeo = new THREE.CylinderGeometry(30,30,300,8);
+				const towerbodygeo = new THREE.CylinderGeometry(30,30,250,8);
 				const towerbodymat = new THREE.MeshPhongMaterial({
 					// specular: 0xffffff,
 					// shading: THREE.FlatShading,
@@ -377,7 +411,7 @@
 					color: 0xf5f5dc
 				})
 				const tower = new THREE.Mesh( towerbodygeo, towerbodymat );
-				tower.position.set(350,150,280);
+				tower.position.set(350,125,280);
 				scene.add(tower);
 
 
