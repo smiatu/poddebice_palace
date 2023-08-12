@@ -186,6 +186,16 @@
 				mainBuildingRooftop.position.set(150,150,0);
 				scene.add(mainBuildingRooftop);
 
+				A = new THREE.Vector2( -65, 0 );
+				B = new THREE.Vector2( 65, 0 );
+				C = new THREE.Vector2( 0, 60 );
+				height = 150;
+				const mainBuildingTopFloorRooftopGeometry = new PrismGeometry([ A, B, C ], height);
+				const mainBuildingTopFloorRooftop = new THREE.Mesh(mainBuildingTopFloorRooftopGeometry, rooftopMaterial);
+				mainBuildingTopFloorRooftop.rotation.y = Math.PI / 2;
+				mainBuildingTopFloorRooftop.position.set(75, 195, 150);
+				scene.add(mainBuildingTopFloorRooftop);
+
 				const wingRooftop = new THREE.Mesh(mainBuildingsRooftopGeometry, rooftopMaterial);
 				wingRooftop.position.set(0,100,-75);
 				wingRooftop.rotation.y = Math.PI / 2;
@@ -202,10 +212,17 @@
 				mainBuilding.position.set(150,75,150);
 				scene.add(mainBuilding);
 
+				const mainBuildingTopFloorGeometry = new THREE.BoxGeometry(150, 45, 130);
+				const mainBuildingTopFloor = new THREE.Mesh(mainBuildingTopFloorGeometry, wallsMaterial);
+				mainBuildingTopFloor.position.set(150, 172.5, 150);
+				scene.add(mainBuildingTopFloor);
+
 				const wingBodyGeometry = new THREE.BoxGeometry(300,100,150);
 				const wingBody = new THREE.Mesh( wingBodyGeometry, wallsMaterial );
 				wingBody.position.set(150,50,-75);
 				scene.add(wingBody);
+
+				//chapel
 
 				const chapelBodyGeometry = new THREE.CylinderGeometry(67.5,67.5,75,8);
 				const chapel = new THREE.Mesh( chapelBodyGeometry, wallsMaterial );
@@ -216,6 +233,50 @@
 				const chapelRooftop = new THREE.Mesh(chapelRooftopGeometry,rooftopMaterial);
 				chapelRooftop.position.set(0, 90, 250);
 				scene.add(chapelRooftop);
+
+				const chapelSpireBaseGeometry = new THREE.ConeGeometry(20, 10, 8, 1);
+				const chapelSpire = new THREE.Mesh(chapelSpireBaseGeometry,rooftopMaterial);
+				chapelSpire.position.set(0, 105, 250);
+				scene.add(chapelSpire);
+
+				const chapelSpirePart1Geometry = new THREE.TorusGeometry(10, 8, 3, 16);
+				const chapelSpirePart1 = new THREE.Mesh(chapelSpirePart1Geometry,rooftopMaterial);
+				chapelSpirePart1.position.set(0, 108, 250);
+				chapelSpirePart1.rotation.x = Math.PI / 2;
+				scene.add(chapelSpirePart1);
+
+				const chapelSpirePart2Geometry = new THREE.TorusGeometry(10, 10, 16, 8);
+				const chapelSpirePart2 = new THREE.Mesh(chapelSpirePart2Geometry,rooftopMaterial);
+				chapelSpirePart2.position.set(0, 119, 250);
+				chapelSpirePart2.rotation.x = Math.PI / 2;
+				scene.add(chapelSpirePart2);
+
+				const chapelSpireLanternBaseGeometry = new THREE.CylinderGeometry(15, 10, 6, 8);
+				const chapelSpireLanternBase = new THREE.Mesh(chapelSpireLanternBaseGeometry, rooftopMaterial);
+				chapelSpireLanternBase.position.set(0, 134, 250);
+				scene.add(chapelSpireLanternBase);
+
+				const chapelSpireLanternGeometry = new THREE.CylinderGeometry(10, 10, 14, 8);
+				const chapelSpireLantern = new THREE.Mesh(chapelSpireLanternGeometry, rooftopMaterial);
+				chapelSpireLantern.position.set(0, 142, 250);
+				scene.add(chapelSpireLantern);
+
+				const chapelSpireLanternTopPart1Geometry = new THREE.CylinderGeometry(5, 15, 8, 8);
+				const chapelSpireLanternTopPart1 = new THREE.Mesh(chapelSpireLanternTopPart1Geometry, rooftopMaterial);
+				chapelSpireLanternTopPart1.position.set(0, 153, 250);
+				scene.add(chapelSpireLanternTopPart1);
+
+				const chapelSpireLanternTopPart2Geometry = new THREE.CylinderGeometry(8, 5, 4, 8);
+				const chapelSpireLanternTopPart2 = new THREE.Mesh(chapelSpireLanternTopPart2Geometry, rooftopMaterial);
+				chapelSpireLanternTopPart2.position.set(0, 159, 250);
+				scene.add(chapelSpireLanternTopPart2);
+
+				const chapelSpireLanternTopPart3Geometry = new THREE.CylinderGeometry(0, 8, 40, 8);
+				const chapelSpireLanternTopPart3 = new THREE.Mesh(chapelSpireLanternTopPart3Geometry, rooftopMaterial);
+				chapelSpireLanternTopPart3.position.set(0, 181, 250);
+				scene.add(chapelSpireLanternTopPart3);
+
+				//tower
 
 				const towerBodyGeometry = new THREE.CylinderGeometry(30,30,250,8);
 				const tower = new THREE.Mesh( towerBodyGeometry, wallsMaterial );
