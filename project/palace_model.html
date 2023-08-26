@@ -140,9 +140,12 @@
 
 				const wallsMaterial = new THREE.MeshPhongMaterial({
 					color: 0xf5f5dc
-				})
+				});
 				const rooftopMaterial = new THREE.MeshPhongMaterial({
 					color: 0x696F71
+				});
+				const temporaryMaterial = new THREE.MeshLambertMaterial({
+					color: 0xff0000
 				});
 
 				const PrismGeometry = function ( vertices, height ) {
@@ -172,7 +175,7 @@
 
 				const staircaseTopGeometry = new PrismGeometry( [ A, B, C ], height );
 				const staircaseTop = new THREE.Mesh( staircaseTopGeometry, wallsMaterial );
-				staircaseTop.position.set(225,120,270);
+				staircaseTop.position.set(325,120,270);
 				scene.add( staircaseTop );
 
 				A = new THREE.Vector2( -75, 0 );
@@ -183,7 +186,7 @@
 				const mainBuildingsRooftopGeometry = new PrismGeometry( [ A, B, C ], height );
 
 				const mainBuildingRooftop = new THREE.Mesh(mainBuildingsRooftopGeometry, rooftopMaterial);
-				mainBuildingRooftop.position.set(150,150,0);
+				mainBuildingRooftop.position.set(250,150,0);
 				scene.add(mainBuildingRooftop);
 
 				A = new THREE.Vector2( -65, 0 );
@@ -193,127 +196,170 @@
 				const mainBuildingTopFloorRooftopGeometry = new PrismGeometry([ A, B, C ], height);
 				const mainBuildingTopFloorRooftop = new THREE.Mesh(mainBuildingTopFloorRooftopGeometry, rooftopMaterial);
 				mainBuildingTopFloorRooftop.rotation.y = Math.PI / 2;
-				mainBuildingTopFloorRooftop.position.set(75, 195, 150);
+				mainBuildingTopFloorRooftop.position.set(175, 195, 150);
 				scene.add(mainBuildingTopFloorRooftop);
 
 				const wingRooftop = new THREE.Mesh(mainBuildingsRooftopGeometry, rooftopMaterial);
-				wingRooftop.position.set(0,100,-75);
+				wingRooftop.position.set(100,100,-75);
 				wingRooftop.rotation.y = Math.PI / 2;
 				scene.add(wingRooftop);
 
 				// objects
 				const staircaseGeometry = new THREE.BoxGeometry(100, 120, 30);
 				const staircase = new THREE.Mesh(staircaseGeometry, wallsMaterial);
-				staircase.position.set(275, 60, 285);
+				staircase.position.set(375, 60, 285);
 				scene.add(staircase);
 
 				const mainBuildingBodyGeometry = new THREE.BoxGeometry(150,150,300);
 				const mainBuilding = new THREE.Mesh( mainBuildingBodyGeometry, wallsMaterial );
-				mainBuilding.position.set(150,75,150);
+				mainBuilding.position.set(250,75,150);
 				scene.add(mainBuilding);
 
 				const mainBuildingTopFloorGeometry = new THREE.BoxGeometry(150, 45, 130);
 				const mainBuildingTopFloor = new THREE.Mesh(mainBuildingTopFloorGeometry, wallsMaterial);
-				mainBuildingTopFloor.position.set(150, 172.5, 150);
+				mainBuildingTopFloor.position.set(250, 172.5, 150);
 				scene.add(mainBuildingTopFloor);
 
 				const wingBodyGeometry = new THREE.BoxGeometry(300,100,150);
 				const wingBody = new THREE.Mesh( wingBodyGeometry, wallsMaterial );
-				wingBody.position.set(150,50,-75);
+				wingBody.position.set(250,50,-75);
 				scene.add(wingBody);
 
 				//chapel
 
 				const chapelBodyGeometry = new THREE.CylinderGeometry(67.5,67.5,75,8);
 				const chapel = new THREE.Mesh( chapelBodyGeometry, wallsMaterial );
-				chapel.position.set(0,37.5,250);
+				chapel.position.set(100,37.5,250);
 				scene.add(chapel);
 
 				const chapelRooftopGeometry = new THREE.ConeGeometry(75, 30, 8, 1);
 				const chapelRooftop = new THREE.Mesh(chapelRooftopGeometry,rooftopMaterial);
-				chapelRooftop.position.set(0, 90, 250);
+				chapelRooftop.position.set(100, 90, 250);
 				scene.add(chapelRooftop);
 
 				const chapelSpireBaseGeometry = new THREE.ConeGeometry(20, 10, 8, 1);
 				const chapelSpire = new THREE.Mesh(chapelSpireBaseGeometry,rooftopMaterial);
-				chapelSpire.position.set(0, 105, 250);
+				chapelSpire.position.set(100, 105, 250);
 				scene.add(chapelSpire);
 
 				const chapelSpirePart1Geometry = new THREE.TorusGeometry(10, 8, 3, 16);
 				const chapelSpirePart1 = new THREE.Mesh(chapelSpirePart1Geometry,rooftopMaterial);
-				chapelSpirePart1.position.set(0, 108, 250);
+				chapelSpirePart1.position.set(100, 108, 250);
 				chapelSpirePart1.rotation.x = Math.PI / 2;
 				scene.add(chapelSpirePart1);
 
 				const chapelSpirePart2Geometry = new THREE.TorusGeometry(10, 10, 16, 8);
 				const chapelSpirePart2 = new THREE.Mesh(chapelSpirePart2Geometry,rooftopMaterial);
-				chapelSpirePart2.position.set(0, 119, 250);
+				chapelSpirePart2.position.set(100, 119, 250);
 				chapelSpirePart2.rotation.x = Math.PI / 2;
 				scene.add(chapelSpirePart2);
 
 				const chapelSpireLanternBaseGeometry = new THREE.CylinderGeometry(15, 10, 6, 8);
 				const chapelSpireLanternBase = new THREE.Mesh(chapelSpireLanternBaseGeometry, rooftopMaterial);
-				chapelSpireLanternBase.position.set(0, 134, 250);
+				chapelSpireLanternBase.position.set(100, 134, 250);
 				scene.add(chapelSpireLanternBase);
 
 				const chapelSpireLanternGeometry = new THREE.CylinderGeometry(10, 10, 14, 8);
 				const chapelSpireLantern = new THREE.Mesh(chapelSpireLanternGeometry, rooftopMaterial);
-				chapelSpireLantern.position.set(0, 142, 250);
+				chapelSpireLantern.position.set(100, 142, 250);
 				scene.add(chapelSpireLantern);
 
 				const chapelSpireLanternTopPart1Geometry = new THREE.CylinderGeometry(5, 15, 8, 8);
 				const chapelSpireLanternTopPart1 = new THREE.Mesh(chapelSpireLanternTopPart1Geometry, rooftopMaterial);
-				chapelSpireLanternTopPart1.position.set(0, 153, 250);
+				chapelSpireLanternTopPart1.position.set(100, 153, 250);
 				scene.add(chapelSpireLanternTopPart1);
 
 				const chapelSpireLanternTopPart2Geometry = new THREE.CylinderGeometry(8, 5, 4, 8);
 				const chapelSpireLanternTopPart2 = new THREE.Mesh(chapelSpireLanternTopPart2Geometry, rooftopMaterial);
-				chapelSpireLanternTopPart2.position.set(0, 159, 250);
+				chapelSpireLanternTopPart2.position.set(100, 159, 250);
 				scene.add(chapelSpireLanternTopPart2);
 
 				const chapelSpireLanternTopPart3Geometry = new THREE.CylinderGeometry(0, 8, 40, 8);
 				const chapelSpireLanternTopPart3 = new THREE.Mesh(chapelSpireLanternTopPart3Geometry, rooftopMaterial);
-				chapelSpireLanternTopPart3.position.set(0, 181, 250);
+				chapelSpireLanternTopPart3.position.set(100, 181, 250);
 				scene.add(chapelSpireLanternTopPart3);
 
 				//tower
 
 				const towerBodyGeometry = new THREE.CylinderGeometry(30,30,250,8);
 				const tower = new THREE.Mesh( towerBodyGeometry, wallsMaterial );
-				tower.position.set(350,125,280);
+				tower.position.set(450,125,280);
 				scene.add(tower);
 
 				const towerRoofBaseGeometry = new THREE.ConeGeometry(35, 15, 8);
 				const towerRoofBase = new THREE.Mesh(towerRoofBaseGeometry, rooftopMaterial);
-				towerRoofBase.position.set(350,260,280);
+				towerRoofBase.position.set(450,260,280);
 				scene.add(towerRoofBase);
 
 				const towerRoofDrumGeometry = new THREE.CylinderGeometry(20, 20, 10, 8);
 				const towerRoofDrum = new THREE.Mesh(towerRoofDrumGeometry, rooftopMaterial);
-				towerRoofDrum.position.set(350, 262, 280);
+				towerRoofDrum.position.set(450, 262, 280);
 				scene.add(towerRoofDrum);
 
 				const towerRoofDrumTopGeometry = new THREE.ConeGeometry(25, 10, 8);
 				const towerRoofDrumTop = new THREE.Mesh(towerRoofDrumTopGeometry, rooftopMaterial);
-				towerRoofDrumTop.position.set(350,272,280);
+				towerRoofDrumTop.position.set(450,272,280);
 				scene.add(towerRoofDrumTop);
 
 				const towerRoofDomeGeometry = new THREE.TorusGeometry(12, 10, 16, 8);
 				const towerRoofDome = new THREE.Mesh(towerRoofDomeGeometry, rooftopMaterial);
 				towerRoofDome.rotation.x = Math.PI / 2;
-				towerRoofDome.position.set(350, 276, 280);
+				towerRoofDome.position.set(450, 276, 280);
 				scene.add(towerRoofDome);
 
 				const towerRoofLanternBaseGeometry = new THREE.ConeGeometry(15, 10, 8);
 				const towerRoofLanternBase = new THREE.Mesh(towerRoofLanternBaseGeometry, rooftopMaterial);
-				towerRoofLanternBase.position.set(350, 290, 280);
+				towerRoofLanternBase.position.set(450, 290, 280);
 				scene.add(towerRoofLanternBase);
 
 				const towerRoofLanternGeometry = new THREE.ConeGeometry(4, 30, 8);
 				const towerRoofLantern = new THREE.Mesh(towerRoofLanternGeometry, rooftopMaterial);
-				towerRoofLantern.position.set(350, 305, 280);
+				towerRoofLantern.position.set(450, 305, 280);
 				scene.add(towerRoofLantern);
 
+				// arcade
+				let x0 = 25;
+				let y0 = 40;
+				let r = 15;
+
+				const arcadePts = [];
+				arcadePts.push(new THREE.Vector2(0,0));
+				arcadePts.push(new THREE.Vector2(0,75));
+				arcadePts.push(new THREE.Vector2(50,75));
+				arcadePts.push(new THREE.Vector2(50,0));
+				arcadePts.push(new THREE.Vector2(40,0));
+				arcadePts.push(new THREE.Vector2(40,40));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/12)*r,y0 + Math.sin(Math.PI*1/12)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/6)*r,y0 + Math.sin(Math.PI*1/6)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/4)*r,y0 + Math.sin(Math.PI*1/4)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/3)*r,y0 + Math.sin(Math.PI*1/3)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/12)*r,y0 + Math.sin(Math.PI*5/12)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/2)*r,y0 + Math.sin(Math.PI*1/2)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*7/12)*r,y0 + Math.sin(Math.PI*7/12)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*2/3)*r,y0 + Math.sin(Math.PI*2/3)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*3/4)*r,y0 + Math.sin(Math.PI*3/4)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/6)*r,y0 + Math.sin(Math.PI*5/6)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*11/12)*r,y0 + Math.sin(Math.PI*11/12)*r));
+				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI)*r,y0 + Math.sin(Math.PI)*r));
+				arcadePts.push(new THREE.Vector2(10,40));
+				arcadePts.push(new THREE.Vector2(10,0));
+
+				const arcadeShape = new THREE.Shape( arcadePts );
+				const extrudeSettings = {
+					depth: 10,
+					bevelEnabled: false
+				};
+				const arcadeTopGeometry = new THREE.ExtrudeGeometry(arcadeShape, extrudeSettings);
+				const arcadeTop = new THREE.Mesh( arcadeTopGeometry, temporaryMaterial ) ;
+				arcadeTop.position.set(255, 75, 300);
+				scene.add( arcadeTop );
+
+				//todo remove
+				// marker
+				const markerGeometry = new THREE.BoxGeometry(1,1,1);
+				const marker = new THREE.Mesh(markerGeometry,temporaryMaterial);
+				marker.position.set(0,0.5,0);
+				scene.add(marker);
 				//
 
 				renderer = new THREE.WebGLRenderer();
