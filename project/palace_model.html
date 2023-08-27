@@ -210,9 +210,9 @@
 				staircase.position.set(375, 60, 285);
 				scene.add(staircase);
 
-				const mainBuildingBodyGeometry = new THREE.BoxGeometry(150,150,300);
+				const mainBuildingBodyGeometry = new THREE.BoxGeometry(150,150,240);
 				const mainBuilding = new THREE.Mesh( mainBuildingBodyGeometry, wallsMaterial );
-				mainBuilding.position.set(250,75,150);
+				mainBuilding.position.set(250,75,120);
 				scene.add(mainBuilding);
 
 				const mainBuildingTopFloorGeometry = new THREE.BoxGeometry(150, 45, 130);
@@ -317,42 +317,122 @@
 				towerRoofLantern.position.set(450, 305, 280);
 				scene.add(towerRoofLantern);
 
-				// arcade
+				// arcades
 				let x0 = 25;
 				let y0 = 40;
 				let r = 15;
 
-				const arcadePts = [];
-				arcadePts.push(new THREE.Vector2(0,0));
-				arcadePts.push(new THREE.Vector2(0,75));
-				arcadePts.push(new THREE.Vector2(50,75));
-				arcadePts.push(new THREE.Vector2(50,0));
-				arcadePts.push(new THREE.Vector2(40,0));
-				arcadePts.push(new THREE.Vector2(40,40));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/12)*r,y0 + Math.sin(Math.PI*1/12)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/6)*r,y0 + Math.sin(Math.PI*1/6)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/4)*r,y0 + Math.sin(Math.PI*1/4)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/3)*r,y0 + Math.sin(Math.PI*1/3)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/12)*r,y0 + Math.sin(Math.PI*5/12)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*1/2)*r,y0 + Math.sin(Math.PI*1/2)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*7/12)*r,y0 + Math.sin(Math.PI*7/12)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*2/3)*r,y0 + Math.sin(Math.PI*2/3)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*3/4)*r,y0 + Math.sin(Math.PI*3/4)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/6)*r,y0 + Math.sin(Math.PI*5/6)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*11/12)*r,y0 + Math.sin(Math.PI*11/12)*r));
-				arcadePts.push(new THREE.Vector2(x0 + Math.cos(Math.PI)*r,y0 + Math.sin(Math.PI)*r));
-				arcadePts.push(new THREE.Vector2(10,40));
-				arcadePts.push(new THREE.Vector2(10,0));
+				const arcadeBottomPts = [];
+				arcadeBottomPts.push(new THREE.Vector2(0,0));
+				arcadeBottomPts.push(new THREE.Vector2(0,75));
+				arcadeBottomPts.push(new THREE.Vector2(50,75));
+				arcadeBottomPts.push(new THREE.Vector2(50,0));
+				arcadeBottomPts.push(new THREE.Vector2(40,0));
+				arcadeBottomPts.push(new THREE.Vector2(40,40));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/12)*r,y0 + Math.sin(Math.PI/12)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/6)*r,y0 + Math.sin(Math.PI/6)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/4)*r,y0 + Math.sin(Math.PI/4)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/3)*r,y0 + Math.sin(Math.PI/3)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/12)*r,y0 + Math.sin(Math.PI*5/12)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/2)*r,y0 + Math.sin(Math.PI/2)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*7/12)*r,y0 + Math.sin(Math.PI*7/12)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*2/3)*r,y0 + Math.sin(Math.PI*2/3)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*3/4)*r,y0 + Math.sin(Math.PI*3/4)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/6)*r,y0 + Math.sin(Math.PI*5/6)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*11/12)*r,y0 + Math.sin(Math.PI*11/12)*r));
+				arcadeBottomPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI)*r,y0 + Math.sin(Math.PI)*r));
+				arcadeBottomPts.push(new THREE.Vector2(10,40));
+				arcadeBottomPts.push(new THREE.Vector2(10,0));
 
-				const arcadeShape = new THREE.Shape( arcadePts );
+				const arcadeBottomShape = new THREE.Shape( arcadeBottomPts );
 				const extrudeSettings = {
 					depth: 10,
 					bevelEnabled: false
 				};
-				const arcadeTopGeometry = new THREE.ExtrudeGeometry(arcadeShape, extrudeSettings);
-				const arcadeTop = new THREE.Mesh( arcadeTopGeometry, temporaryMaterial ) ;
-				arcadeTop.position.set(255, 75, 300);
-				scene.add( arcadeTop );
+				const arcadeBottomGeometry = new THREE.ExtrudeGeometry(arcadeBottomShape, extrudeSettings);
+				const arcadeBottom = new THREE.Mesh( arcadeBottomGeometry, wallsMaterial ) ;
+				arcadeBottom.position.set(275, 0, 290);
+
+				const arcadeBottomP2 = arcadeBottom.clone();
+				arcadeBottomP2.position.set(225, 0, 290);
+
+				const arcadeBottomP3 = arcadeBottom.clone();
+				arcadeBottomP3.position.set(175, 0, 290);
+
+				const arcadeBottomGroup = new THREE.Group();
+				arcadeBottomGroup.add(arcadeBottom);
+				arcadeBottomGroup.add(arcadeBottomP2);
+				arcadeBottomGroup.add(arcadeBottomP3);
+				scene.add(arcadeBottomGroup);
+
+				x0 = 25;
+				y0 = 50;
+				r = 20;
+
+
+				const arcadeTopPts = [];
+				arcadeTopPts.push(new THREE.Vector2(0,0));
+				arcadeTopPts.push(new THREE.Vector2(0,75));
+				arcadeTopPts.push(new THREE.Vector2(50,75));
+				arcadeTopPts.push(new THREE.Vector2(50,0));
+				arcadeTopPts.push(new THREE.Vector2(45,0));
+				arcadeTopPts.push(new THREE.Vector2(45,50));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/12)*r,y0 + Math.sin(Math.PI*1/12)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/6)*r,y0 + Math.sin(Math.PI*1/6)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/4)*r,y0 + Math.sin(Math.PI*1/4)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/3)*r,y0 + Math.sin(Math.PI*1/3)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/12)*r,y0 + Math.sin(Math.PI*5/12)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI/2)*r,y0 + Math.sin(Math.PI*1/2)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*7/12)*r,y0 + Math.sin(Math.PI*7/12)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*2/3)*r,y0 + Math.sin(Math.PI*2/3)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*3/4)*r,y0 + Math.sin(Math.PI*3/4)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*5/6)*r,y0 + Math.sin(Math.PI*5/6)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI*11/12)*r,y0 + Math.sin(Math.PI*11/12)*r));
+				arcadeTopPts.push(new THREE.Vector2(x0 + Math.cos(Math.PI)*r,y0 + Math.sin(Math.PI)*r));
+				arcadeTopPts.push(new THREE.Vector2(5,50));
+				arcadeTopPts.push(new THREE.Vector2(5,0));
+
+				const arcadeTopShape = new THREE.Shape( arcadeTopPts );
+				const arcadeTopGeometry = new THREE.ExtrudeGeometry(arcadeTopShape, extrudeSettings);
+				const arcadeTop = new THREE.Mesh( arcadeTopGeometry, wallsMaterial ) ;
+
+				arcadeTop.position.set(275, 75, 290);
+				const arcadeTopP2 = arcadeTop.clone();
+				arcadeTopP2.position.set(225, 75, 290);
+				const arcadeTopP3 = arcadeTop.clone();
+				arcadeTopP3.position.set(175, 75, 290);
+
+				const arcadeTopGroup = new THREE.Group();
+				arcadeTopGroup.add(arcadeTop);
+				arcadeTopGroup.add(arcadeTopP2);
+				arcadeTopGroup.add(arcadeTopP3);
+				scene.add(arcadeTopGroup);
+
+				const arcadeSideWallGeometry = new THREE.BoxGeometry(5, 150, 50);
+				const arcadeSideWall1 = new THREE.Mesh(arcadeSideWallGeometry, wallsMaterial);
+				arcadeSideWall1.position.set(322.5, 75, 265);
+				scene.add(arcadeSideWall1);
+
+				const arcadeBottomSideWallGeometry = new THREE.BoxGeometry(5, 75, 50);
+				const arcadeBottomSideWall1 = new THREE.Mesh(arcadeBottomSideWallGeometry, wallsMaterial);
+				arcadeBottomSideWall1.position.set(177.5, 37.5, 265);
+				scene.add(arcadeBottomSideWall1);
+
+				const arcadeSideExtrudeSettings = {
+					depth: 5,
+					bevelEnabled: false
+				};
+				const arcadeTopSideGeometry = new THREE.ExtrudeGeometry(arcadeTopShape, arcadeSideExtrudeSettings);
+				const arcadeTopSide = new THREE.Mesh( arcadeTopSideGeometry, wallsMaterial ) ;
+				arcadeTopSide.position.set(175, 75, 290);
+				arcadeTopSide.rotation.y = Math.PI / 2;
+				scene.add(arcadeTopSide);
+
+				const arcadeFloorGeometry = new THREE.BoxGeometry(150, 10, 50);
+				const arcadeFloor = new THREE.Mesh(arcadeFloorGeometry, wallsMaterial);
+				arcadeFloor.position.set(250, 70, 265);
+				scene.add(arcadeFloor);
+
 
 				//todo remove
 				// marker
