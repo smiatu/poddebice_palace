@@ -449,6 +449,18 @@
 				scene.add(arcadeFloor);
 
 				//windows
+
+				//names are getting huge here since there are a lot of window types and places to put them
+				//windowRound is small round window on side of a staircase and on top of attic storeys
+				//windowRectangularBig are most common on every side on main building and a wing
+				//
+				//
+				//abbreviations used in names:
+				//MB - main building
+				//S1 - side 1, 2... etc
+				//F0 - floor 0, 1... etc (European system)
+				//W1 - window number 1, 2... etc
+
 				const windowRoundBaseGeometry = new THREE.CylinderGeometry(5,5,1,12);
 				const windowRoundBase = new THREE.Mesh(windowRoundBaseGeometry, whiteMaterial);
 				windowRoundBase.rotation.x = Math.PI / 2;
@@ -499,6 +511,71 @@
 				const windowRound4 = windowRound.clone();
 				windowRound4.position.set(-60, 70, 0);
 				scene.add(windowRound4);
+
+				const windowRectangularBigBaseGeometry = new THREE.BoxGeometry(1,50,30);
+				const windowRectangularBigBase = new THREE.Mesh(windowRectangularBigBaseGeometry, whiteMaterial);
+				windowRectangularBigBase.position.set(175,40,50);
+
+				const windowRectangularBigGlassGeometry = new THREE.BoxGeometry(0.5,46,26);
+				const windowRectangularBigGlass = new THREE.Mesh(windowRectangularBigGlassGeometry, blackMaterial);
+				windowRectangularBigGlass.position.set(174,39.5,50);
+
+				const windowRectangularBigMuntinsPts = [];
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,0));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,15));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(0,15));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(0,15.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,15.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,30.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(0,30.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(0,31));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,31));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(13,46));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,46));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,31));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(26,31));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(26,30.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,30.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,15.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(26,15.5));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(26,15));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,15));
+				windowRectangularBigMuntinsPts.push(new THREE.Vector2(14,0));
+				const windowRectangularBigMuntinsShape = new THREE.Shape(windowRectangularBigMuntinsPts);
+				const windowRectangularBigMuntinsGeometry = new THREE.ExtrudeGeometry(windowRectangularBigMuntinsShape, extrudeSettings025);
+				const windowRectangularBigMuntins = new THREE.Mesh(windowRectangularBigMuntinsGeometry, whiteMaterial);
+				windowRectangularBigMuntins.rotation.y = Math.PI/2;
+				windowRectangularBigMuntins.position.set(173.5,16.5,63);
+
+				const windowRectangularBig = new THREE.Group();
+				windowRectangularBig.add(windowRectangularBigBase);
+				windowRectangularBig.add(windowRectangularBigGlass);
+				windowRectangularBig.add(windowRectangularBigMuntins);
+				scene.add(windowRectangularBig);
+
+				const windowRectangularBigMBS1F0W2 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F0W2.position.set(0, 0, 60);
+				scene.add(windowRectangularBigMBS1F0W2);
+
+				const windowRectangularBigMBS1F0W3 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F0W3.position.set(0, 0, 120);
+				scene.add(windowRectangularBigMBS1F0W3);
+
+				const windowRectangularBigMBS1F1W1 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F1W1.position.set(0, 75, 0);
+				scene.add(windowRectangularBigMBS1F1W1);
+
+				const windowRectangularBigMBS1F1W2 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F1W2.position.set(0, 75, 60);
+				scene.add(windowRectangularBigMBS1F1W2);
+
+				const windowRectangularBigMBS1F1W3 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F1W3.position.set(0, 75, 120);
+				scene.add(windowRectangularBigMBS1F1W3);
+
+				const windowRectangularBigMBS1F1W4 = windowRectangularBig.clone();
+				windowRectangularBigMBS1F1W4.position.set(0, 75, 175);
+				scene.add(windowRectangularBigMBS1F1W4);
 
 
 				//todo remove
